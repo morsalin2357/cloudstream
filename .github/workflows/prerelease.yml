@@ -24,11 +24,15 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build Debug APK
-        run: ./gradlew app:assembleDebug
+      - name: Generate Dummy Keystore
+        run: |
+          keytool -genkeypair -v -keystore dummy.keystore -storepass android -alias dummykey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+
+      - name: Build Release APK
+        run: ./gradlew app:assembleRelease -Pandroid.injected.signing.store.file=$PWD/dummy.keystore -Pandroid.injected.signing.store.password=android -Pandroid.injected.signing.key.alias=dummykey -Pandroid.injected.signing.key.password=android
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug
-          path: app/build/outputs/apk/**/*.apk
+          name: app-release
+          path: app/build/outputs/apk/release/*.apk
