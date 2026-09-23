@@ -50,7 +50,8 @@ object SearchResultBuilder {
         itemView: View,
         nextFocusUp: Int? = null,
         nextFocusDown: Int? = null,
-        colorCallback: ((Palette) -> Unit)? = null
+        colorCallback: ((Palette) -> Unit)? = null,
+        loadThumbnail: Boolean = true
     ) {
         val cardView: ImageView = itemView.findViewById(R.id.imageView)
         val cardText: TextView? = itemView.findViewById(R.id.imageText)
@@ -131,13 +132,17 @@ object SearchResultBuilder {
 
         cardText?.text = card.name
         cardText?.isVisible = showTitle
-        cardView.isVisible = true
-        if (!card.posterUrl.isNullOrEmpty()) {
-            cardView.loadImage(card.posterUrl, card.posterHeaders) {
-                error { getImageFromDrawable(itemView.context, R.drawable.default_cover) }
-            }
-        } else cardView.loadImage(R.drawable.default_cover)
-
+        if (loadThumbnail) {
+    cardView.isVisible = true
+    if (!card.posterUrl.isNullOrEmpty()) {
+        cardView.loadImage(card.posterUrl, card.posterHeaders) {
+            error { getImageFromDrawable(itemView.context, R.drawable.default_cover) }
+        }
+    } else
+        cardView.loadImage(R.drawable.default_cover)
+} else {
+    cardView.isVisible = false
+}
         fun click(view: View?) {
             clickCallback.invoke(
                 SearchClickCallback(
