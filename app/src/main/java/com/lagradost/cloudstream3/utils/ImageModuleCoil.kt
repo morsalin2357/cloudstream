@@ -36,6 +36,7 @@ import java.nio.ByteBuffer
 
 object ImageLoader {
     private const val TAG = "CoilImgLoader"
+
     internal fun buildImageLoader(context: PlatformContext): ImageLoader {
         val isBrokenHardware = hasPotentialBrokenHardware()
         return ImageLoader.Builder(context)
@@ -55,16 +56,14 @@ object ImageLoader {
                     .maxSizePercent(0.04) // max 4% of storage for disk caching
                     .build()
             }
-            /** Pass interceptors with care, unnecessary passing tokens to servers
-            or image hosting services causes unauthorized exceptions **/
             .components {
                 add(OkHttpNetworkFetcherFactory(callFactory = { buildDefaultClient(context) }))
                 if (isBrokenHardware) {
                     add(BitmapFactoryDecoder.Factory())
-                } // sw decoder
+                }
             }
             .apply {
-                if (isBrokenHardware) { // coil will auto choose optimal config on modern device
+                if (isBrokenHardware) {
                     bitmapConfig(Bitmap.Config.ARGB_8888)
                 }
                 setupCoilLogger()
@@ -72,8 +71,6 @@ object ImageLoader {
             .build()
     }
 
-    /** DebugLogger on debug builds which won't slow down release builds & use EventListener for
-    Errors on release builds. **/
     internal fun ImageLoader.Builder.setupCoilLogger() {
         if (BuildConfig.DEBUG) {
             logger(DebugLogger())
@@ -94,8 +91,11 @@ object ImageLoader {
     private fun ImageView.loadImageInternal(
         imageData: Any?,
         headers: Map<String, String>? = null,
-        builder: ImageRequest.Builder.() -> Unit = {} // for placeholder, error & transformations
+        builder: ImageRequest.Builder.() -> Unit = {}
     ) {
+        // ⬇️ এখানে return বসানো হয়েছে, তাই অ্যাপের কোনো ছবি আর লোড হবে না ⬇️
+        return 
+        
         // clear image to avoid loading & flickering issue at fast scrolling (~recycler view/lazy column)
         this.dispose()
         if (imageData == null) return
