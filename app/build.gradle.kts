@@ -58,7 +58,6 @@ abstract class GenerateGitHashTask : DefaultTask() {
     }
 }
 
-// ✅ এখানে টাস্কের নাম <GenerateGitHashTask> যোগ করা হয়েছে
 val generateGitHash = tasks.register<GenerateGitHashTask>("generateGitHash") {
     val gitDir = layout.projectDirectory.dir("../.git")
     headFile.set(gitDir.file("HEAD"))
@@ -149,12 +148,11 @@ android {
         }
     }
 
-    // ✅ এখানে আপনার ৩২-বিট টিভি বক্সের জন্য APK সাইজ কমানোর কোড দেওয়া হলো
     splits {
         abi {
             isEnable = true
             reset()
-            include("armeabi-v7a") // 32-bit only
+            include("armeabi-v7a")
             isUniversalApk = false
         }
     }
@@ -207,4 +205,6 @@ dependencies {
     implementation(libs.bundles.lifecycle)
     implementation(libs.bundles.navigation)
     implementation(libs.kotlinx.collections.immutable)
+    
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }
