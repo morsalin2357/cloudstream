@@ -4,6 +4,15 @@ import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
 import org.jetbrains.kotlin.gradle.dsl.JvmDefaultMode
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
+import org.gradle.api.DefaultTask
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.InputDirectory
+import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
+import org.gradle.api.tasks.TaskAction
 
 plugins {
     alias(libs.plugins.android.application)
@@ -49,7 +58,8 @@ abstract class GenerateGitHashTask : DefaultTask() {
     }
 }
 
-val generateGitHash = tasks.register("generateGitHash") {
+// ✅ এখানে টাস্কের নাম <GenerateGitHashTask> যোগ করা হয়েছে
+val generateGitHash = tasks.register<GenerateGitHashTask>("generateGitHash") {
     val gitDir = layout.projectDirectory.dir("../.git")
     headFile.set(gitDir.file("HEAD"))
     headsDir.set(gitDir.dir("refs/heads"))
@@ -57,7 +67,6 @@ val generateGitHash = tasks.register("generateGitHash") {
 }
 
 android {
-    @Suppress("UnstableApiUsage")
     testOptions {
         unitTests.isReturnDefaultValues = true
     }
@@ -140,12 +149,12 @@ android {
         }
     }
 
-    // ⬇️ APK সাইজ কমানোর জন্য splits ব্লক ⬇️
+    // ✅ এখানে আপনার ৩২-বিট টিভি বক্সের জন্য APK সাইজ কমানোর কোড দেওয়া হলো
     splits {
         abi {
             isEnable = true
             reset()
-            include("armeabi-v7a") // শুধু ৩২-বিট আর্কিটেকচারের জন্য
+            include("armeabi-v7a") // 32-bit only
             isUniversalApk = false
         }
     }
