@@ -254,3 +254,15 @@ dependencies {
     implementation(project(":library"))
     implementation(project(":shared"))
 }
+
+// এই ব্লকটি যোগ করা হলো যাতে Internal ও Prerelease API ব্যবহারের অনুমতি পাওয়া যায়
+tasks.withType<KotlinJvmCompile> {
+    compilerOptions {
+        jvmTarget.set(javaTarget)
+        jvmDefault.set(JvmDefaultMode.ENABLE)
+        optIn.addAll(
+            "com.lagradost.cloudstream3.InternalAPI",
+            "com.lagradost.cloudstream3.Prerelease",
+        )
+    }
+}
