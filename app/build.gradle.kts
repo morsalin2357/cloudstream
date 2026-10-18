@@ -205,6 +205,52 @@ dependencies {
     implementation(libs.bundles.lifecycle)
     implementation(libs.bundles.navigation)
     implementation(libs.kotlinx.collections.immutable)
-    
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+    implementation(libs.kotlinx.serialization.json)
+
+    implementation(libs.preference.ktx)
+    implementation(libs.material)
+    implementation(libs.constraintlayout)
+
+    implementation(libs.bundles.coil)
+
+    implementation(libs.bundles.media3)
+    implementation(libs.video)
+    implementation(libs.bundles.nextlib)
+
+    implementation(libs.anime.db)
+    implementation(libs.colorpicker)
+    implementation(libs.newpipeextractor)
+    implementation(libs.juniversalchardet)
+
+    implementation(libs.shimmer)
+    implementation(libs.palette.ktx)
+    implementation(libs.tvprovider)
+    implementation(libs.overlappingpanels)
+    implementation(libs.biometric)
+    implementation(libs.previewseekbar.media3)
+    implementation(libs.qrcode.kotlin)
+
+    implementation(libs.jsoup)
+    implementation(libs.ksoup)
+    implementation(libs.rhino)
+    implementation(libs.safefile)
+
+    coreLibraryDesugaring(libs.desugar.jdk.libs.nio)
+    implementation(libs.conscrypt.android)
+    implementation(libs.jackson.module.kotlin)
+
+    implementation(libs.zipline)
+    implementation("com.google.code.gson:gson:2.11.0")
+    implementation("me.xdrop:fuzzywuzzy:1.4.0")
+
+    implementation(libs.torrentserver)
+    implementation(libs.work.runtime.ktx)
+    implementation(libs.nicehttp)
+
+    implementation(libs.bundles.compose)
+    implementation(libs.activity.compose)
+    implementation(libs.kotlinx.io.core)
+
+    implementation(project(":library"))
+    implementation(project(":shared"))
 }
